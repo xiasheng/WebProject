@@ -1,0 +1,116 @@
+
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html charset=utf-8">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"> </script>
+	<script src="http://yui.yahooapis.com/3.13.0/build/yui/yui-min.js"></script>
+	<script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
+  <link href="mystyle.css" rel=stylesheet type="text/css">
+  
+  <script> 
+    var currentPage = "";
+
+    function showCalendar() {
+        YUI().use('calendar', 'datatype-date', 'cssbutton',  function(Y) {
+        
+        // Create a new instance of calendar, placing it in 
+        // #mycalendar container, setting its width to 340px,
+        // the flags for showing previous and next month's 
+        // dates in available empty cells to true, and setting 
+        // the date to today's date.          
+        var calendar = new Y.Calendar({
+          contentBox: "#mycalendar",
+          width:'200px',
+          showPrevMonth: true,
+          showNextMonth: true,
+          date: new Date()}).render();
+        });   
+    }
+    
+    function loadPage(item) {
+      console.log("loadPage " + item);
+      
+      newPage = $.trim(item);
+      if (newPage == currentPage) {
+        return;  
+      }
+      
+      $.each($("#menu ul li a"), function(i, v) {
+        if ( $.trim ($(v).html() ) == newPage) {
+           $(v).addClass("visiting");    
+        } else if ( $.trim ($(v).html() ) == currentPage) {
+           $(v).removeClass("visiting");    
+        } } );
+      
+      if (newPage == "Home"){
+        $("#content").load("home.html"); 
+      } else if (newPage == "Blog"){
+        $("#content").load("blog.html"); 
+      } else if (newPage == "Album") {
+        $("#content").load("album.html");  
+      } else if (newPage == "GuestBook"){
+        $("#content").load("guestbook.html"); 
+      } else {
+          console.log("page not found : " + item);
+          return;
+      }
+      
+      currentPage = newPage;
+    }
+    
+    function loadWeather() {
+      var myprovince = remote_ip_info['province']; 
+      var mycity = remote_ip_info['city'];
+      console.log("myprovince :" + myprovince + " mycity :" + mycity);
+    }
+    
+    $(document).ready( function() {
+      
+      $("#menu ul li a").bind("click", function(event) {
+          event.preventDefault();
+          loadPage($(this).text());
+        });
+          
+      // loadWeather();
+      // showCalendar();    
+      // clock();  
+      loadPage("Home");        
+      } );
+  </script>  
+	  
+</head>
+
+<body>
+  <div id="header"> 
+  </div>  
+  <div id="sidebar">
+    <div id="myweather">
+      <iframe name="weather_inc" src="http://tianqi.xixik.com/cframe/7" width="225" height="90" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+    </div>  
+	  <div id="mycalendar" class="yui3-skin-sam yui3-g">
+	  </div>
+	
+	</div>
+	
+	<div id="menu"> 
+		<ul> 
+			<li class="li_first"> <a href="#"> Home </a> </li>
+			<li> <a href="#"> Blog </a> </li>
+			<li> <a href="#"> Album </a> </li>
+			<li class="li_last"> <a href="#"> GuestBook </a> </li>
+		</ul>	
+	 </div>
+
+	<div id="content">
+	</div>
+
+	<div id="footer">
+		<p> Copyright &copy; 2000-2013 ABC Corporation, All Rights Reserved </p>
+	</div>
+
+
+</body>
+
+</html>
+

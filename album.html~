@@ -1,0 +1,224 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html charset=utf-8">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"> </script>
+	
+	<script> 
+		var ImageNumPerPage = 4;
+		var currentpage = 0;
+		var imagePath = "./photo/";
+		var imgNames = ["tn_1.jpg", "tn_2.jpg", "tn_3.jpg", "tn_4.jpg", "tn_5.jpg", 
+				"tn_6.jpg", "tn_7.jpg", "tn_8.jpg", "tn_9.jpg", "tn_10.jpg"];
+		$.each(imgNames, function(i, val) {
+			imgNames[i] = imagePath + val;
+		});
+	
+		var pagenum = imgNames.length / ImageNumPerPage;
+		var mytooltip = $('<div id="mytooltip"></div>').hide();
+		
+		function getImageIndex(imgname) {
+			console.log("imgname : " + imgname);
+			for (var i=0; i < imgNames.length; i++) {
+				var tmp = imgNames[i].replace(/tn_/, "");
+				if (tmp == imgname) {
+					return i;
+				}
+			}
+			return 0;
+		}
+
+		function prevImage(currentimg) {
+			var idx = getImageIndex(currentimg.attr("src"));
+			if (idx < 0) return;
+			idx--;
+			if (idx < 0) {
+				idx = imgNames.length-1;
+			}
+			loadBigImage(imgNames[idx]);		
+		}
+
+		function nextImage(currentimg) {
+			var idx = getImageIndex(currentimg.attr("src"));
+			if (idx < 0) return;
+			idx++;
+			if (idx > imgNames.length-1) {
+				idx = 0;
+			}
+			loadBigImage(imgNames[idx]);
+			
+		}
+	
+
+		function loadAllImg() {
+			
+			for (var i=0; i < imgNames.length; i++) {
+					$("<img>").attr("src", imgNames[i]).appendTo("#smallimagelist").addClass("myimg");
+				}
+				
+			$("#smallimagelist img").bind("click", function(event) {
+						var reg = /tn_/;
+						var bigsrc = $(this).attr("src").replace(/tn_/, "");
+						console.log("bigsrc : " + bigsrc);
+						$("#bigimage img").width(798).attr("src", bigsrc);
+						// $(this).css("display", "none");
+						});		
+			}	
+		
+		function loadBigImage(smallimagesrc) {
+			console.log("loadbigimg for " + smallimagesrc);
+				var reg = /tn_/;
+      	var bigsrc = smallimagesrc.replace(/tn_/, "");
+      	$("#bigimage img").attr("src", bigsrc);
+		}
+		
+		function loadImg(page) {
+			console.log("loadimg for page " + page);
+			var count = 0;
+			for (var i=page * ImageNumPerPage; i < imgNames.length && count < ImageNumPerPage; i++, count++) {
+				var imgid = "#myimage_" + i%ImageNumPerPage;
+				$(imgid).attr("src", imgNames[i]);
+				$(imgid).show();
+			}
+			
+			for (;count < ImageNumPerPage; count++) {
+				var imgid = "#myimage_" + count;
+				$(imgid).hide();
+			}
+			
+			loadBigImage(imgNames[page * ImageNumPerPage]);
+			
+      $("#smallimagelist img").bind("click", function(event) {
+      		loadBigImage($(this).attr("src"));
+      	});		
+     	}
+     	
+    function createImageList() {
+    	for (var i=0; i < ImageNumPerPage; i++) {
+					$("<img>").attr("id", "myimage_" + i).insertBefore("#s_next").addClass("myimg").width(150);
+			}
+    } 	
+
+		$(document).ready(function() {
+		  console.log("welcome to album");
+				// $("#container").width(600);
+				$("#bigimage").width(800).height(700);
+				$("#bigimage img").width(798).height(700);
+				$("#smallimagelist").width(800).height(160);
+				// loadAllImg();  
+				createImageList(); 
+				loadImg(currentpage);
+				mytooltip.appendTo('body');
+				
+				$("#s_next").bind("click", function(event) {
+					console.log("next");
+					currentpage++;
+					if (currentpage > pagenum) {
+						currentpage = 0;	
+					}
+					loadImg(currentpage);
+      	});	
+
+				$("#s_prev").bind("click", function(event) {
+					console.log("prev");
+					currentpage--;
+					if (currentpage < 0 ) {
+						currentpage = pagenum;	
+					}
+					loadImg(currentpage);
+      	});	
+
+				$("#bigimage img").bind("click mouseover mouseout mousemove", function(event) {
+					event.preventDefault();
+					event.stopPropagation();
+					var positionX=event.originalEvent.x-$(this).offset().left
+							||event.originalEvent.layerX-$(this).offset().left||0;
+					var positionY=event.originalEvent.x-$(this).offset().left
+							||event.originalEvent.layerX-$(this).offset().left||0;
+					// console.log("positionX : " + positionX + "  src : " + $(this).attr("src"));
+					if (positionX < 400) {
+						if (event.type == "click") { prevImage($(this)); }
+						else if (event.type == "mouseover" || event.type == "mousemove") {
+							// $("#mytooltip").css({ top: event.pageY + 10, left: event.pageX + 10 }).html("PREV").show();	
+							$(this).css( {"cursor" : "url('/img/arr_left.cur'), auto" });
+						}
+						
+					} else {
+						if (event.type == "click") { nextImage($(this)); }
+						else if (event.type == "mouseover" || event.type == "mousemove") {
+							// $("#mytooltip").css({ top: event.pageY + 10, left: event.pageX + 10 }).html("NEXT").show();	
+						$(this).css( {"cursor" : "url('/img/arr_right.cur'), auto" });
+						}					
+					}
+					
+					if (event.type == "mouseout") {
+						$("#mytooltip").hide(); 
+					}
+					
+
+	});
+				
+			});
+	</script>
+	<style>
+		* {
+			margin:0 auto;
+		}
+
+		.myimg {
+						border-color:red;
+						border-style:solid;
+						border-width:1px;
+			}
+			
+		#bigimage{
+						border-color:red;
+						border-style:none;
+						border-width:1px;
+						position: relative;
+			}	
+
+		#bigimage img{
+						position: absolute;
+						bottom:0;			
+			}	
+			
+		#smallimagelist {
+						border-color:green;
+						border-style:solid;
+						border-width:3px;			
+			}	
+			
+		#tip {
+			text-align:center;
+		}	
+		
+		#mytooltip {
+	  	position: absolute;
+	  	background-color: #cfc;
+	  	padding: 4px;
+	  	border: 2px solid #9c9;
+	  	border-radius: 4px;
+	  	-webkit-border-radius: 4px;
+	  	-moz-border-radius: 4px;
+	}
+			
+			
+	</style>
+</head>
+<body>
+<div id="container">
+	
+	<div id="bigimage">
+	<img> </img>
+	</div>
+	<div id="tip">
+		<p> hello jQuery!!!</p>
+	<div>
+	
+	<div id="smallimagelist">
+		<span id="s_prev"> prev </span>	
+		<span id="s_next"> next </span>	
+	</div>	
+</div>	
+</body>
+</html>

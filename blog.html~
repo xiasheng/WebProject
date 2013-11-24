@@ -1,0 +1,142 @@
+
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html charset=utf-8">
+<script>
+  
+var allLog = [{name:"1.txt", title:"jQuery 事件：MouseOver/MouseOut vs MouseEnter/MouseLeave", date:"2013-11-24"},
+              {name:"2.txt", title:"JavaScript 多级联动浮动菜单", date:"2013-11-11", type: "zz"},
+              {name:"3.txt", title:"CSS font-size 属性", date:"2013-10-14"},
+              {name:"4.txt", title:"一张网页，要经历怎样的过程，才能抵达用户面前？", date:"2013-10-09", type: "zz"},
+              {name:"5.txt", title:"一位新人，要经历怎样的成长，才能站在技术之巅？", date:"2013-10-07"},
+              {name:"6.txt", title:"CSS 常用颜色表", date:"2013-10-01"}
+            ];
+
+function getNameByTitle(title) {
+  for (var i = 0; i < allLog.length; i++) {
+    if (allLog[i]["title"] == title) {
+      return allLog[i]["name"];  
+    }
+  }    
+  return null;
+}
+
+
+function showAbstract(current) {
+  console.log("current : " + current.text());
+      if ($("#log_abstract").length > 0)
+        $("#log_abstract").remove();
+      $("<div id='log_abstract'>").load(getNameByTitle(current.text())).insertAfter(current.parent());
+}
+
+
+function hideAbstract() {
+      $("#abstract").remove();
+}
+
+function initJqueryExtend() {
+    $.fn.lazybind = function(event, fn, timeout, abort){
+      var timer = null;
+      $(this).live(event, function(){
+          var cur = $(this);
+          timer = setTimeout( function() { fn(cur); }, timeout);
+      });
+      if(abort == undefined){
+          return;
+      }
+      $(this).live(abort, function(){
+          if(timer != null){
+              clearTimeout(timer);
+          }
+      });
+    };  
+}
+
+
+function initBlogEvent() {
+  
+  initJqueryExtend();
+  $("#content_blog .log a").die("click");
+  $("#content_blog .log a").live("click", function() {
+      
+      if ($("#log_abstract").length > 0) {
+        $("#log_abstract").remove();
+        
+        if ($(this).hasClass("showing_abstract")) {
+          $(this).removeClass("showing_abstract");
+          return;
+        }
+      } 
+      
+      $(".showing_abstract").removeClass("showing_abstract");
+      
+      $("<div id='log_abstract'>").load(getNameByTitle($(this).text())).insertAfter($(this).parent());
+      
+      $(this).addClass("showing_abstract");
+    });
+  
+  // $("#content_blog .log a").lazybind("mouseover", showAbstract, 500, "mouseout");
+    
+  // $("#log_abstract").lazybind("mouseout", hideAbstract, 500, "mouseover");
+    
+  $("#logmode_switch").bind("click", function() {
+      if($(this).text() == "切换到列表") {
+        $(this).text("切换到摘要");
+      } else {
+        $(this).text("切换到列表");  
+      }  
+  });  
+}
+
+function loadALog(title_, time_, type_) {
+  
+  var v0 = $("<span class='log_type'>");
+  
+  var prefix = "";
+  if (type_ == "zz") {
+      prefix = "[转]";
+      v0.html(prefix).addClass("zz");
+  } else {
+      prefix = "[原]";
+      v0.html(prefix).addClass("yc");  
+  }
+  
+  var v1 = $("<a class='log_title' href='#'>").html(title_);
+  var v2 = $("<span class='log_time'>").html(time_);
+  var v3 =  $("<div class='log'>").append(v0).append(v1).append(v2);
+  v3.appendTo("#content_blog");
+}
+
+function loadAllLog() {
+  // $("#content").empty();
+  $("#logmode_switch").html("切换到摘要");
+  	      
+  var d = new Date();
+  var today = d.getFullYear() + "-" + (parseInt(d.getMonth())+1) + "-" + d.getDate();
+  console.log("today: " + today);
+  
+  for (var i = 0; i < allLog.length; i++) {
+    if (allLog[i]["date"] == today) {
+      loadALog(allLog[i]["title"], "today");  
+    } else {
+      loadALog(allLog[i]["title"], allLog[i]["date"],  allLog[i]["type"]);  
+    }
+  }
+}
+  
+$(document).ready(function() {
+  console.log("welcome to blog");
+  initBlogEvent();
+  loadAllLog();
+  });  
+</script>  
+
+</head>
+<body>
+	<div id="content_blog">
+	  <div id='logmode_switch'>
+	  </div>  
+	</div>
+</body>
+</html>

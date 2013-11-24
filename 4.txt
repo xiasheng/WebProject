@@ -1,0 +1,1 @@
+﻿A simple tabs script using CSS and JavaScript. When you move the mouse over a tab the associated tab content is then displayed. If you need to display large amounts of information on a web page then this script could come in handy as you could separate the information into different sections and put each section under a different tab.

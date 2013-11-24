@@ -1,0 +1,6 @@
+﻿Button creator - work area
+This is where your menu is previewed. All changes are instantly displayed. Also, you can test how the buttons web respond to the mouse events. Just act like it is a web page: move mouse over the buttons, click them and so on to preview. 
+
+Left-click a button to select. If you want several buttons web to be selected use Shift and Ctrl keys. 
+
+Use Shift to select several adjacent buttons. Click first button to be selected, then press Shift and while holding it pressed click the second button. This two buttons and the buttons that lay between them will be selected 

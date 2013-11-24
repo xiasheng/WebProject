@@ -1,0 +1,172 @@
+
+  body {
+  background-image: url(bg.jpg);  
+  background-repeat: no-repeat;
+  background-size:100% 100%;
+  }
+  
+  #header {
+    height: 40px;
+  }
+
+	#menu {
+	border-bottom-style: solid;
+  border-bottom-width: 5px;
+	border-bottom-color: blue;
+	width: 800px;
+	height: 30px;
+	margin: 0 auto;
+	float: left;
+	}
+
+	#menu ul {
+	list-style: none;
+	width: 600px;
+	margin: 0 auto;
+	text-align: center;
+	}
+
+
+	#menu ul li{
+	width: 140px;
+	float: left;	
+	margin: 0 auto;
+	border-right-style: solid;
+  border-right-width: 1px;
+	border-right-color: #C0C0C0;
+  }
+
+	#menu ul li a{
+	text-decoration: none;
+  }
+
+	#menu ul li a:hover {
+	color: blue;
+	cursor: pointer;
+	font-weight:bold;
+	}
+
+	#menu ul li .visiting{
+	color: blue;
+	cursor: pointer;
+	font-weight:bold;
+	}
+
+	#menu ul li.li_first {
+	}
+	
+	#menu ul li.li_last {
+	border-right-style: none;
+	}
+
+	#content {
+	float: left;
+	width: 800px;
+	min-height: 700px;
+	margin: 20px auto;
+	padding: 10px;
+	}
+	
+	#content_blog .log {
+	  padding-top : 40px;  
+	  border-style: none;
+    border-width: 1px;
+	  border-color: red;
+	}
+
+	#content_blog .log .log_type{
+	clear: left;
+	float: left;
+	padding-right : 10px; 
+	text-decoration : none;
+	font-size: 100%;
+	font-weight: bold;
+	}
+
+	#content_blog .log .yc{
+	color: blue;
+	}
+
+	#content_blog .log .zz{
+	color: red;
+	}
+
+	#content_blog .log .log_title{
+	float: left;
+	text-decoration : none;
+	font-size: 100%;
+	color: black;
+	}
+	
+	#content_blog .log .log_title:hover{
+	color: blue;
+	}
+
+	#content_blog .log .log_time{
+	clear: right;
+	float: right;
+	}
+	
+	#log_abstract {
+	clear: both;  
+	padding-top: 10px;
+	border-style: none;
+  border-width: 1px;
+	border-color: grey;
+	text-align: left;
+	font-size: 95%;
+	
+	}
+	
+	#logmode_switch {
+	width: 100%;  
+  clear: both;
+	float: right;
+	color: #1E90FF;
+	font-size: 80%;  
+	text-align: right;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+	border-bottom-style: solid;
+  border-bottom-width: 1px;
+	border-color: #C0C0C0;
+	}
+	
+	#logmode_switch:hover	{
+	cursor: pointer;  
+	}
+
+	#footer {
+	clear: both;
+	width: 100%;
+	margin: 20px auto;
+	border-top-style: solid;
+  border-width: 1px;
+	border-color: #C0C0C0;
+	text-align: center;
+	}
+	
+	#footer p{
+	font-family: arial;
+	font-size: 80%;
+	}
+
+	#sidebar {
+	float: left;
+	width: 225px;
+	height: 600px;
+	margin: 40px 20px;
+	border-style: none;
+  border-width: 2px;
+	border-color: red;
+	text-align: center;
+	}
+	
+	#myweather {
+	text-align: center;  
+	}
+	
+	#mycalendar {
+	padding-top: 50px;  
+	}
+
